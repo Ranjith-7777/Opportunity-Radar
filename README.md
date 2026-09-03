@@ -1,1077 +1,193 @@
-# Opportunity Radar
+<div align="center">
 
-**An intelligent platform for discovering, understanding, and managing internships, hackathons, scholarships, competitions, research opportunities, and other opportunities for students.**
+# OPPURTUNITY-RADAR
 
-> **Status:** Early Development 🚧
+**Discover, understand, and track student opportunities — all in one place.**
 
----
+[![Status](https://img.shields.io/badge/status-early%20development-orange)]()
+[![License](https://img.shields.io/badge/license-MIT-blue)]()
 
-## About the Project
-
-Students often discover valuable opportunities through scattered sources such as LinkedIn posts, WhatsApp messages, Instagram posters, college groups, PDFs, websites, emails, and announcements.
-
-This makes it difficult to:
-
-- Discover relevant opportunities on time
-- Understand eligibility requirements
-- Keep track of deadlines
-- Avoid missing important applications
-- Manage multiple ongoing applications
-
-**Opportunity Radar** aims to bring these activities into a single intelligent platform.
-
-The long-term goal is to build a student-focused application that combines traditional full-stack development with AI-powered information extraction, semantic search, Retrieval-Augmented Generation (RAG), recommendation systems, and application tracking.
+</div>
 
 ---
 
-## Core Idea
+> ⚠️ **Active development.** Opportunity Radar is in early-stage, planning-to-implementation transition. Features described below are a mix of *current scope* and *planned roadmap* — each is labeled clearly. Nothing marked "planned" is implemented yet.
 
-Opportunity Radar will help students discover and organize opportunities such as:
+## Overview
 
-- Internships
-- Hackathons
-- Scholarships
-- Research opportunities
-- Coding competitions
-- Conferences
-- Workshops
-- Fellowships
-- Student programs
-- College events
+Students discover internships, hackathons, scholarships, research openings, competitions, and fellowships from scattered, inconsistent sources — LinkedIn posts, WhatsApp forwards, Instagram posters, PDFs, emails, and college notice boards. There is no single place to search, evaluate eligibility, or track applications.
 
-Opportunities may eventually be added through:
+**Opportunity Radar** aims to be that place: a platform that aggregates opportunities, extracts structured information from unstructured sources (including images and PDFs), and helps students find and track what's relevant to them.
 
-- Manual submissions
-- Posters and screenshots
-- PDF documents
-- Web links
-- Public announcements
+## Problem
 
-The system will convert this information into structured, searchable, and personalized opportunity listings.
+| Pain point | Consequence |
+|---|---|
+| Opportunities are spread across posters, PDFs, emails, and social posts | Students miss relevant openings entirely |
+| No standard format for eligibility, deadlines, or requirements | Wasted time verifying basic details |
+| No centralized tracking | Missed deadlines, duplicate or forgotten applications |
+| Manual filtering by skills, year, or interest | High effort, low signal-to-noise |
 
----
+## Key Features
 
-## Planned Features
+### V0.1 Target Scope
 
-### Opportunity Discovery
+- User authentication
+- User profiles (skills, interests, graduation year)
+- Manual opportunity creation
+- Opportunity feed
+- Search and filters
+- Save opportunities
+- PostgreSQL-backed persistence
 
-- Personalized opportunity feed
-- Search and filtering
-- Opportunity categories
-- Deadline-based sorting
-- Saved opportunities
-- Trending opportunities
-- Recently added opportunities
+### Planned features
 
-### User Profiles
+- Application tracking with status stages
+- Deadline tracking and reminder notifications
+- Personalized opportunity recommendations
+- Duplicate opportunity detection
 
-Users will be able to maintain information such as:
+## AI Capabilities *(planned)*
 
-- Skills
-- Interests
-- Degree
-- Graduation year
-- Preferred opportunity categories
-- Preferred locations
+Opportunity Radar's long-term goal is to turn unstructured opportunity sources into structured, trustworthy data — without inventing facts.
 
-This information can later be used to improve recommendations and eligibility matching.
+| Capability | Description |
+|---|---|
+| Poster / screenshot extraction | OCR and multimodal extraction of opportunity details from images |
+| PDF and URL parsing | Structured extraction from documents and web pages |
+| Structured field extraction | Title, organization, eligibility, deadline, location, mode, skills, team size, application URL |
+| Semantic search | Embedding-based search over the opportunity corpus (pgvector) |
+| Duplicate detection | Identify and merge re-posted or near-identical opportunities |
+| Profile-aware ranking | Recommendations informed by user skills, interests, and year |
+| Eligibility assistance (RAG) | Citation-grounded answers to questions like *"Can I apply?"*, *"Is there a CGPA requirement?"*, *"What's the team size?"* |
 
----
+**Core principle:** the AI layer must never fabricate eligibility, deadlines, fees, or requirements. Answers to consequential questions are grounded in retrieval over original source documents, with citations back to the source.
 
-## Application Tracking
+## Architecture Overview
 
-Students will be able to track opportunities through stages such as:
+High-level target architecture. Subject to change as the system evolves.
 
-```text
-Saved
-  ↓
-Preparing
-  ↓
-Applied
-  ↓
-Assessment
-  ↓
-Interview
-  ↓
-Offer
+```mermaid
+flowchart LR
+    subgraph Client
+        A[React + TypeScript Frontend]
+    end
+
+    subgraph Backend
+        B[FastAPI REST API]
+        C[Auth Service]
+        D[Opportunity Service]
+        E[Extraction Pipeline<br/>OCR / PDF / URL parsing]
+        F[Recommendation & Search Engine]
+        G[RAG / Eligibility Assistant]
+    end
+
+    subgraph Data
+        H[(PostgreSQL)]
+        I[(pgvector store)]
+    end
+
+    A --> B
+    B --> C
+    B --> D
+    B --> F
+    B --> G
+    D --> H
+    E --> D
+    F --> I
+    G --> I
+    G --> H
 ```
 
-The platform will also support deadline tracking and reminders.
+## Tech Stack
 
----
+| Layer | Technology |
+|---|---|
+| Frontend | React, TypeScript |
+| Backend | Python, FastAPI, REST APIs |
+| Database | PostgreSQL |
+| AI / Search | LLMs, OCR, multimodal extraction, embeddings, semantic search, RAG, pgvector |
+| Engineering | Git, GitHub, Docker, GitHub Actions, cloud deployment |
 
-## AI-Powered Information Extraction
+## Roadmap
 
-A major planned feature of Opportunity Radar is automatic extraction of opportunity information from unstructured content.
+1. Core full-stack platform *(in progress)*
+2. Application tracking and reminders
+3. AI poster / PDF / link extraction
+4. Semantic search with pgvector
+5. RAG with citation-grounded answers
+6. Eligibility matching
+7. Personalized recommendations
+8. Duplicate detection
+9. Notification system
+10. Testing, Docker, CI/CD, analytics, and deployment
 
-For example:
+## Getting Started
 
-```text
-Poster / Screenshot / PDF / Link
-                ↓
-        Information Extraction
-                ↓
-       Structured Opportunity
+> Setup instructions will be added as the initial V0.1 implementation stabilizes.
+
+<details>
+<summary>Planned local setup (placeholder)</summary>
+
+```bash
+# Clone the repository
+git clone https://github.com/Ranjith-7777/Opportunity-Radar.git
+cd Opportunity-Radar
+
+# Backend setup (placeholder)
+cd backend
+# python -m venv venv && source venv/bin/activate
+# pip install -r requirements.txt
+# uvicorn main:app --reload
+
+# Frontend setup (placeholder)
+cd frontend
+# npm install
+# npm run dev
 ```
 
-The system may extract information such as:
+Environment variables, database migrations, and Docker Compose instructions will be documented here once finalized.
 
-- Title
-- Organization
-- Category
-- Description
-- Eligibility
-- Deadline
-- Location
-- Mode
-- Required skills
-- Team size
-- Application link
-
-This will reduce the need for users to manually enter every field.
-
----
-
-## Eligibility Assistance
-
-Opportunity Radar will eventually help users understand whether an opportunity matches their profile.
-
-Example:
-
-```text
-Eligibility Check
-
-✓ Degree requirement matched
-✓ Graduation year matched
-✓ Location requirement matched
-
-? Work authorization
-  Additional information required
-
-Result:
-Likely Eligible
-```
-
-Eligibility decisions should be grounded in the original opportunity information instead of relying on unsupported AI-generated assumptions.
-
----
-
-## Retrieval-Augmented Generation
-
-For opportunities that include official documents or detailed guidelines, the platform will support document-based question answering.
-
-Example questions:
-
-```text
-Can second-year students apply?
-
-Is there a minimum CGPA requirement?
-
-Is the competition online or offline?
-
-What is the maximum team size?
-
-Is there a registration fee?
-```
-
-The long-term goal is to provide answers together with supporting evidence or citations from the original source.
-
----
-
-## Personalized Recommendations
-
-The platform will gradually develop a recommendation system that ranks opportunities based on factors such as:
-
-- User interests
-- Skills
-- Graduation year
-- Degree
-- Eligibility
-- Location preferences
-- Saved opportunities
-- Application history
-- Deadlines
-
-Example:
-
-```text
-Recommended for You
-
-1. Software Engineering Internship    95% match
-2. AI Research Internship             91% match
-3. National Hackathon                 88% match
-4. Student Research Fellowship        84% match
-```
-
-Initial versions may use rule-based ranking, while later versions can explore embeddings and machine-learning-based recommendation approaches.
-
----
-
-## Semantic Search
-
-Opportunity Radar will eventually support natural-language and semantic search.
-
-Instead of relying only on filters, users may be able to search using queries such as:
-
-```text
-Show me AI internships for 2028 graduates.
-
-Find hackathons whose deadlines are this month.
-
-Show research opportunities related to computer vision.
-
-Find online competitions open to undergraduate students.
-```
-
-The system can combine traditional filtering with vector-based semantic search.
-
----
-
-## Duplicate Detection
-
-The platform will eventually detect duplicate opportunities submitted from different sources.
-
-For example, the same hackathon may appear through:
-
-- A WhatsApp poster
-- A LinkedIn post
-- An Instagram screenshot
-- A PDF circular
-- A website link
-
-Opportunity Radar can compare title, organization, description, dates, and embeddings to identify likely duplicates.
-
----
-
-## Deadline Reminders
-
-Users will be able to receive reminders for saved opportunities.
-
-Example:
-
-```text
-Microsoft Software Engineering Internship
-
-Deadline in 3 days.
-
-You have not marked this application as submitted.
-```
-
-Reminder support may later include:
-
-- In-app notifications
-- Email notifications
-- Mobile push notifications
-
----
-
-## Planned Technology Stack
-
-The technology stack may evolve as the project develops.
-
-### Frontend
-
-- React
-- TypeScript
-- Modern responsive UI
-
-### Backend
-
-- Python
-- FastAPI
-- REST APIs
-
-### Database
-
-- PostgreSQL
-
-### AI / Machine Learning
-
-- Large Language Models
-- OCR
-- Multimodal information extraction
-- Embeddings
-- Semantic search
-- Recommendation systems
-- Retrieval-Augmented Generation
-
-### Vector Search
-
-- PostgreSQL
-- pgvector
-
-### Development & Deployment
-
-- Git
-- GitHub
-- Docker
-- GitHub Actions
-- Cloud deployment
-
----
-
-## Proposed Architecture
-
-```text
-                     Opportunity Radar
-                            │
-            ┌───────────────┼───────────────┐
-            │               │               │
-         Students       Opportunity      AI Services
-                            Data
-            │               │               │
-            └───────────────┼───────────────┘
-                            │
-                        FastAPI
-                            │
-               ┌────────────┴────────────┐
-               │                         │
-          PostgreSQL                 AI Pipeline
-               │                         │
-               │              ┌──────────┼──────────┐
-               │              │          │          │
-               │             OCR        RAG     Embeddings
-               │
-               └───────────────┐
-                               │
-                         Recommendation
-                              Engine
-```
-
----
-
-## Development Roadmap
-
-### Phase 1 — Core Platform
-
-- [ ] Initialize frontend
-- [ ] Initialize backend
-- [ ] Configure PostgreSQL
-- [ ] User authentication
-- [ ] User profiles
-- [ ] Opportunity database
-- [ ] Add opportunity
-- [ ] Opportunity feed
-- [ ] Opportunity details page
-- [ ] Search and filters
-- [ ] Save opportunities
-
-### Phase 2 — Application Management
-
-- [ ] Application tracking
-- [ ] Deadline tracking
-- [ ] Reminder system
-- [ ] User dashboard
-
-### Phase 3 — AI Extraction
-
-- [ ] Poster and screenshot upload
-- [ ] OCR pipeline
-- [ ] Structured information extraction
-- [ ] PDF processing
-- [ ] URL-based opportunity extraction
-
-### Phase 4 — Semantic Search & RAG
-
-- [ ] Generate embeddings
-- [ ] Configure pgvector
-- [ ] Semantic opportunity search
-- [ ] Document chunking
-- [ ] Retrieval pipeline
-- [ ] Citation-grounded question answering
-
-### Phase 5 — Personalization
-
-- [ ] Eligibility matching
-- [ ] Profile-aware recommendations
-- [ ] Opportunity ranking
-- [ ] Duplicate opportunity detection
-- [ ] User feedback signals
-
-### Phase 6 — Production Improvements
-
-- [ ] Notifications
-- [ ] Background jobs
-- [ ] Caching
-- [ ] Analytics
-- [ ] Automated testing
-- [ ] Dockerization
-- [ ] CI/CD
-- [ ] Production deployment
-- [ ] Performance optimization
-
----
-
-## Initial Version
-
-The first version of Opportunity Radar will intentionally remain simple.
-
-### V0.1 Target
-
-```text
-Authentication
-      +
-Opportunity Feed
-      +
-Manual Opportunity Creation
-      +
-Search & Filters
-      +
-Save Opportunity
-      +
-PostgreSQL Backend
-```
-
-AI features will be introduced gradually after the core application is stable.
-
----
-
-## Learning Goals
-
-Opportunity Radar is also being developed as a long-term learning project.
-
-The project will provide practical experience with:
-
-- Full-stack application development
-- React and TypeScript
-- Python backend development
-- REST API design
-- PostgreSQL
-- Database modelling
-- Authentication and authorization
-- Search systems
-- OCR
-- Large Language Models
-- Structured AI outputs
-- Embeddings
-- Vector databases
-- Retrieval-Augmented Generation
-- Recommendation systems
-- Ranking algorithms
-- Background processing
-- Testing
-- Docker
-- CI/CD
-- Cloud deployment
-- Product development
-- Working with real user feedback
-
----
-
-## Project Principles
-
-### Build the Product First
-
-AI should improve the product rather than replace basic application functionality.
-
-### Ground Important Information
-
-Eligibility requirements, deadlines, and official details should be traceable to their original sources whenever possible.
-
-### Build Incrementally
-
-The project will grow through small, functional versions rather than attempting to implement every planned feature at once.
-
-### Focus on Real Users
-
-The long-term goal is to test the platform with students and improve it using real feedback.
-
-### Avoid Unsupported AI Decisions
-
-Important information such as eligibility, deadlines, fees, and application requirements should not be invented by the language model.
-
----
+</details>
 
 ## Repository Structure
 
-The repository structure will evolve as development begins.
+> Placeholder — will be updated once the initial project scaffolding is committed.
 
-A possible structure is:
-
-```text
+```
 Opportunity-Radar/
-│
-├── frontend/
-│
-├── backend/
-│
-├── docs/
-│
-├── README.md
-├── LICENSE
-└── .gitignore
+├── backend/        # FastAPI application (planned)
+├── frontend/        # React + TypeScript application (planned)
+├── docs/             # Architecture and design docs (planned)
+└── README.md
 ```
 
----
+## Project Principles
 
-## Current Status
-
-Opportunity Radar is currently in the **planning and initial development stage**.
-
-The immediate goal is to build the core full-stack platform before introducing advanced AI functionality.
-
----
+- **No fabricated answers.** Eligibility, deadlines, fees, and requirements must be grounded in original source material, not inferred by a language model.
+- **Structured over scattered.** Every opportunity should resolve to a consistent, structured record regardless of source format.
+- **Transparency of state.** The README and codebase should always reflect what is actually built, not what is planned.
+- **Student-first design.** Features are prioritized by how much time and uncertainty they remove for students.
 
 ## Contributing
 
-The project is currently under active development.
+Opportunity Radar is not yet open for external contributions — the core architecture and data model are still being established. A `CONTRIBUTING.md` with setup instructions, coding standards, and issue guidelines will be added once the project reaches a stable initial release.
 
-Suggestions, feedback, feature ideas, and contributions will be welcomed as the project matures.
-
----
+If you're interested in following along or discussing the project, feel free to open an issue.
 
 ## License
 
-This project is licensed under the **MIT License**.
-
----
+Licensed under the [MIT License](LICENSE).
 
 ## Author
 
 **Ranjith Raja B**
-
-GitHub: [Ranjith-7777](https://github.com/Ranjith-7777)
-
----
-
-<p align="center">
-  <b>Discover better opportunities. Track what matters. Never miss the next one.</b>
-</p># Opportunity Radar
-
-**An intelligent platform for discovering, understanding, and managing internships, hackathons, scholarships, competitions, research opportunities, and other opportunities for students.**
-
-> **Status:** Early Development 🚧
+GitHub: [@Ranjith-7777](https://github.com/Ranjith-7777)
 
 ---
 
-## About the Project
+<div align="center">
 
-Students often discover valuable opportunities through scattered sources such as LinkedIn posts, WhatsApp messages, Instagram posters, college groups, PDFs, websites, emails, and announcements.
+*Opportunity Radar — one place to find, understand, and track every opportunity that matters.*
 
-This makes it difficult to:
-
-- Discover relevant opportunities on time
-- Understand eligibility requirements
-- Keep track of deadlines
-- Avoid missing important applications
-- Manage multiple ongoing applications
-
-**Opportunity Radar** aims to bring these activities into a single intelligent platform.
-
-The long-term goal is to build a student-focused application that combines traditional full-stack development with AI-powered information extraction, semantic search, Retrieval-Augmented Generation (RAG), recommendation systems, and application tracking.
-
----
-
-## Core Idea
-
-Opportunity Radar will help students discover and organize opportunities such as:
-
-- Internships
-- Hackathons
-- Scholarships
-- Research opportunities
-- Coding competitions
-- Conferences
-- Workshops
-- Fellowships
-- Student programs
-- College events
-
-Opportunities may eventually be added through:
-
-- Manual submissions
-- Posters and screenshots
-- PDF documents
-- Web links
-- Public announcements
-
-The system will convert this information into structured, searchable, and personalized opportunity listings.
-
----
-
-## Planned Features
-
-### Opportunity Discovery
-
-- Personalized opportunity feed
-- Search and filtering
-- Opportunity categories
-- Deadline-based sorting
-- Saved opportunities
-- Trending opportunities
-- Recently added opportunities
-
-### User Profiles
-
-Users will be able to maintain information such as:
-
-- Skills
-- Interests
-- Degree
-- Graduation year
-- Preferred opportunity categories
-- Preferred locations
-
-This information can later be used to improve recommendations and eligibility matching.
-
----
-
-## Application Tracking
-
-Students will be able to track opportunities through stages such as:
-
-```text
-Saved
-  ↓
-Preparing
-  ↓
-Applied
-  ↓
-Assessment
-  ↓
-Interview
-  ↓
-Offer
-```
-
-The platform will also support deadline tracking and reminders.
-
----
-
-## AI-Powered Information Extraction
-
-A major planned feature of Opportunity Radar is automatic extraction of opportunity information from unstructured content.
-
-For example:
-
-```text
-Poster / Screenshot / PDF / Link
-                ↓
-        Information Extraction
-                ↓
-       Structured Opportunity
-```
-
-The system may extract information such as:
-
-- Title
-- Organization
-- Category
-- Description
-- Eligibility
-- Deadline
-- Location
-- Mode
-- Required skills
-- Team size
-- Application link
-
-This will reduce the need for users to manually enter every field.
-
----
-
-## Eligibility Assistance
-
-Opportunity Radar will eventually help users understand whether an opportunity matches their profile.
-
-Example:
-
-```text
-Eligibility Check
-
-✓ Degree requirement matched
-✓ Graduation year matched
-✓ Location requirement matched
-
-? Work authorization
-  Additional information required
-
-Result:
-Likely Eligible
-```
-
-Eligibility decisions should be grounded in the original opportunity information instead of relying on unsupported AI-generated assumptions.
-
----
-
-## Retrieval-Augmented Generation
-
-For opportunities that include official documents or detailed guidelines, the platform will support document-based question answering.
-
-Example questions:
-
-```text
-Can second-year students apply?
-
-Is there a minimum CGPA requirement?
-
-Is the competition online or offline?
-
-What is the maximum team size?
-
-Is there a registration fee?
-```
-
-The long-term goal is to provide answers together with supporting evidence or citations from the original source.
-
----
-
-## Personalized Recommendations
-
-The platform will gradually develop a recommendation system that ranks opportunities based on factors such as:
-
-- User interests
-- Skills
-- Graduation year
-- Degree
-- Eligibility
-- Location preferences
-- Saved opportunities
-- Application history
-- Deadlines
-
-Example:
-
-```text
-Recommended for You
-
-1. Software Engineering Internship    95% match
-2. AI Research Internship             91% match
-3. National Hackathon                 88% match
-4. Student Research Fellowship        84% match
-```
-
-Initial versions may use rule-based ranking, while later versions can explore embeddings and machine-learning-based recommendation approaches.
-
----
-
-## Semantic Search
-
-Opportunity Radar will eventually support natural-language and semantic search.
-
-Instead of relying only on filters, users may be able to search using queries such as:
-
-```text
-Show me AI internships for 2028 graduates.
-
-Find hackathons whose deadlines are this month.
-
-Show research opportunities related to computer vision.
-
-Find online competitions open to undergraduate students.
-```
-
-The system can combine traditional filtering with vector-based semantic search.
-
----
-
-## Duplicate Detection
-
-The platform will eventually detect duplicate opportunities submitted from different sources.
-
-For example, the same hackathon may appear through:
-
-- A WhatsApp poster
-- A LinkedIn post
-- An Instagram screenshot
-- A PDF circular
-- A website link
-
-Opportunity Radar can compare title, organization, description, dates, and embeddings to identify likely duplicates.
-
----
-
-## Deadline Reminders
-
-Users will be able to receive reminders for saved opportunities.
-
-Example:
-
-```text
-Microsoft Software Engineering Internship
-
-Deadline in 3 days.
-
-You have not marked this application as submitted.
-```
-
-Reminder support may later include:
-
-- In-app notifications
-- Email notifications
-- Mobile push notifications
-
----
-
-## Planned Technology Stack
-
-The technology stack may evolve as the project develops.
-
-### Frontend
-
-- React
-- TypeScript
-- Modern responsive UI
-
-### Backend
-
-- Python
-- FastAPI
-- REST APIs
-
-### Database
-
-- PostgreSQL
-
-### AI / Machine Learning
-
-- Large Language Models
-- OCR
-- Multimodal information extraction
-- Embeddings
-- Semantic search
-- Recommendation systems
-- Retrieval-Augmented Generation
-
-### Vector Search
-
-- PostgreSQL
-- pgvector
-
-### Development & Deployment
-
-- Git
-- GitHub
-- Docker
-- GitHub Actions
-- Cloud deployment
-
----
-
-## Proposed Architecture
-
-```text
-                     Opportunity Radar
-                            │
-            ┌───────────────┼───────────────┐
-            │               │               │
-         Students       Opportunity      AI Services
-                            Data
-            │               │               │
-            └───────────────┼───────────────┘
-                            │
-                        FastAPI
-                            │
-               ┌────────────┴────────────┐
-               │                         │
-          PostgreSQL                 AI Pipeline
-               │                         │
-               │              ┌──────────┼──────────┐
-               │              │          │          │
-               │             OCR        RAG     Embeddings
-               │
-               └───────────────┐
-                               │
-                         Recommendation
-                              Engine
-```
-
----
-
-## Development Roadmap
-
-### Phase 1 — Core Platform
-
-- [ ] Initialize frontend
-- [ ] Initialize backend
-- [ ] Configure PostgreSQL
-- [ ] User authentication
-- [ ] User profiles
-- [ ] Opportunity database
-- [ ] Add opportunity
-- [ ] Opportunity feed
-- [ ] Opportunity details page
-- [ ] Search and filters
-- [ ] Save opportunities
-
-### Phase 2 — Application Management
-
-- [ ] Application tracking
-- [ ] Deadline tracking
-- [ ] Reminder system
-- [ ] User dashboard
-
-### Phase 3 — AI Extraction
-
-- [ ] Poster and screenshot upload
-- [ ] OCR pipeline
-- [ ] Structured information extraction
-- [ ] PDF processing
-- [ ] URL-based opportunity extraction
-
-### Phase 4 — Semantic Search & RAG
-
-- [ ] Generate embeddings
-- [ ] Configure pgvector
-- [ ] Semantic opportunity search
-- [ ] Document chunking
-- [ ] Retrieval pipeline
-- [ ] Citation-grounded question answering
-
-### Phase 5 — Personalization
-
-- [ ] Eligibility matching
-- [ ] Profile-aware recommendations
-- [ ] Opportunity ranking
-- [ ] Duplicate opportunity detection
-- [ ] User feedback signals
-
-### Phase 6 — Production Improvements
-
-- [ ] Notifications
-- [ ] Background jobs
-- [ ] Caching
-- [ ] Analytics
-- [ ] Automated testing
-- [ ] Dockerization
-- [ ] CI/CD
-- [ ] Production deployment
-- [ ] Performance optimization
-
----
-
-## Initial Version
-
-The first version of Opportunity Radar will intentionally remain simple.
-
-### V0.1 Target
-
-```text
-Authentication
-      +
-Opportunity Feed
-      +
-Manual Opportunity Creation
-      +
-Search & Filters
-      +
-Save Opportunity
-      +
-PostgreSQL Backend
-```
-
-AI features will be introduced gradually after the core application is stable.
-
----
-
-## Learning Goals
-
-Opportunity Radar is also being developed as a long-term learning project.
-
-The project will provide practical experience with:
-
-- Full-stack application development
-- React and TypeScript
-- Python backend development
-- REST API design
-- PostgreSQL
-- Database modelling
-- Authentication and authorization
-- Search systems
-- OCR
-- Large Language Models
-- Structured AI outputs
-- Embeddings
-- Vector databases
-- Retrieval-Augmented Generation
-- Recommendation systems
-- Ranking algorithms
-- Background processing
-- Testing
-- Docker
-- CI/CD
-- Cloud deployment
-- Product development
-- Working with real user feedback
-
----
-
-## Project Principles
-
-### Build the Product First
-
-AI should improve the product rather than replace basic application functionality.
-
-### Ground Important Information
-
-Eligibility requirements, deadlines, and official details should be traceable to their original sources whenever possible.
-
-### Build Incrementally
-
-The project will grow through small, functional versions rather than attempting to implement every planned feature at once.
-
-### Focus on Real Users
-
-The long-term goal is to test the platform with students and improve it using real feedback.
-
-### Avoid Unsupported AI Decisions
-
-Important information such as eligibility, deadlines, fees, and application requirements should not be invented by the language model.
-
----
-
-## Repository Structure
-
-The repository structure will evolve as development begins.
-
-A possible structure is:
-
-```text
-Opportunity-Radar/
-│
-├── frontend/
-│
-├── backend/
-│
-├── docs/
-│
-├── README.md
-├── LICENSE
-└── .gitignore
-```
-
----
-
-## Current Status
-
-Opportunity Radar is currently in the **planning and initial development stage**.
-
-The immediate goal is to build the core full-stack platform before introducing advanced AI functionality.
-
----
-
-## Contributing
-
-The project is currently under active development.
-
-Suggestions, feedback, feature ideas, and contributions will be welcomed as the project matures.
-
----
-
-## License
-
-This project is licensed under the **MIT License**.
-
----
-
-## Author
-
-**Ranjith Raja B**
-
-GitHub: [Ranjith-7777](https://github.com/Ranjith-7777)
-
----
-
-<p align="center">
-  <b>Discover better opportunities. Track what matters. Never miss the next one.</b>
-</p>
+</div>
